@@ -3,6 +3,7 @@ package edu.projeto.cliente_servidor.configs.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import edu.projeto.cliente_servidor.models.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,25 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("projeto")
                     .withSubject(usuario.getEmail())
-                    .withExpiresAt()
+                    .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
 
             return token;
         } catch (JWTCreationException e) {
-            throw new RuntimeException("Erro de autenticação")
+            throw new RuntimeException("Erro de autenticação");
+        }
+    }
+
+    public String validateToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("projeto")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        } catch (JWTVerificationException e) {
+            return null;
         }
     }
 
