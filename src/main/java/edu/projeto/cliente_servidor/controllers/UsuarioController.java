@@ -1,6 +1,7 @@
 package edu.projeto.cliente_servidor.controllers;
 
 import edu.projeto.cliente_servidor.dto.usuario.CreateRequestDTO;
+import edu.projeto.cliente_servidor.dto.usuario.UpdateRequestDTO;
 import edu.projeto.cliente_servidor.services.AuthService;
 import edu.projeto.cliente_servidor.services.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,11 @@ public class UsuarioController {
     @ResponseBody
     public ResponseEntity findByEmail(@PathVariable String email) {
         return service.findByEmail(email);
+    }
+
+    @PutMapping(value = "/{email}")
+    @ResponseBody
+    public ResponseEntity update(@PathVariable String email, @RequestBody UpdateRequestDTO request) {
+        return service.update(email, request);
     }
 }
