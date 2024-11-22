@@ -27,14 +27,17 @@ public class UsuarioController {
     }
 
     @GetMapping(value = "/{email}")
-    @ResponseBody
     public ResponseEntity findByEmail(@PathVariable String email) {
         return service.findByEmail(email);
     }
 
     @PutMapping(value = "/{email}")
-    @ResponseBody
     public ResponseEntity update(@PathVariable String email, @RequestBody UpdateRequestDTO request) {
         return service.update(email, request);
+    }
+
+    @DeleteMapping(value = "/{email}")
+    public ResponseEntity delete(@PathVariable String email) {
+        return service.delete(email);
     }
 }

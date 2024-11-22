@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -37,10 +38,11 @@ public class UsuarioService {
             newUser.setNome(request.nome());
             newUser.setEmail(request.email());
             newUser.setSenha(passwordEncoder.encode(request.senha()));
+            newUser.setIsAdmin(false);
 
             this.repository.save(newUser);
 
-            return ResponseEntity.ok().build();
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO("Dados invalidos"));
@@ -83,6 +85,7 @@ public class UsuarioService {
         return ResponseEntity.status(HttpStatus.OK).body(_user);
     }
 
+    @Transactional
     public ResponseEntity delete(String email) {
         Optional<Usuario> user = this.repository.findByEmail(email);
 
@@ -91,7 +94,7 @@ public class UsuarioService {
         }
 
         if (user.isPresent()) {
-            this.repository.delete(user);
+            this.repository.deleteByEmail(user.get().getEmail());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
 

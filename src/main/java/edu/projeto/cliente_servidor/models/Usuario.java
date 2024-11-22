@@ -17,9 +17,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Usuario {
     @Id
-    @Column(name = "email")
     private String email;
     private String nome;
     private String senha;
-    private boolean admin;
+    @Column(name = "is_admin")
+    private Boolean isAdmin;
 }
