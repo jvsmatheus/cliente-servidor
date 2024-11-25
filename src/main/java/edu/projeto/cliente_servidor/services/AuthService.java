@@ -39,4 +39,7 @@ public class AuthService {
     }
 
 
+    public ResponseEntity logout() {
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

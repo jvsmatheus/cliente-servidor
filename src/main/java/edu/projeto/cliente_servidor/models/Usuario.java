@@ -1,5 +1,6 @@
 package edu.projeto.cliente_servidor.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,5 +22,6 @@ public class Usuario {
     private String nome;
     private String senha;
     @Column(name = "is_admin")
+    @JsonIgnore
     private Boolean isAdmin;
 }
