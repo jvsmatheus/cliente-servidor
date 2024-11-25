@@ -27,26 +27,38 @@ public class UsuarioService {
     private final TokenService tokenService;
 
     public ResponseEntity create(CreateRequestDTO request) {
-        Optional<Usuario> user = this.repository.findByEmail(request.email());
 
-        if (!user.isEmpty()) {
+        // Verificar tamanho do nome
+        if (request.nome().length() < 3 || request.nome().length() > 100) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponseDTO("Dados inválidos"));
+        }
+
+        // Verificar tamanho e formato da senha
+        if (request.senha().length() < 3 || request.senha().length() > 6 ||
+                !request.senha().matches("\\d+")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponseDTO("Dados inválidos"));
+        }
+
+        // Verificar se o email já está cadastrado
+        Optional<Usuario> user = this.repository.findByEmail(request.email());
+        if (user.isPresent()) {
             return ResponseEntity.ok(new ErrorResponseDTO("Email já cadastrado"));
         }
 
-        if (user.isEmpty()) {
-            Usuario newUser = new Usuario();
-            newUser.setNome(request.nome());
-            newUser.setEmail(request.email());
-            newUser.setSenha(passwordEncoder.encode(request.senha()));
-            newUser.setIsAdmin(false);
+        // Criar novo usuário
+        Usuario newUser = new Usuario();
+        newUser.setNome(request.nome());
+        newUser.setEmail(request.email());
+        newUser.setSenha(passwordEncoder.encode(request.senha()));
+        newUser.setIsAdmin(false);
 
-            this.repository.save(newUser);
+        this.repository.save(newUser);
 
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO("Dados invalidos"));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
 
     public ResponseEntity findAll() {
         List<Usuario> users = this.repository.findAll();

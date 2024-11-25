@@ -22,6 +22,5 @@ public class Usuario {
     private String nome;
     private String senha;
     @Column(name = "is_admin")
-    @JsonIgnore
     private Boolean isAdmin;
 }
