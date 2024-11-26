@@ -77,6 +77,21 @@ public class UsuarioService {
     }
 
     public ResponseEntity update(String email, UpdateRequestDTO request) {
+
+        // Verificar tamanho do nome
+        if (request.nome().length() < 3 || request.nome().length() > 100) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponseDTO("Dados inválidos"));
+        }
+
+        // Verificar tamanho e formato da senha
+        if (request.senha().length() < 3 || request.senha().length() > 6 ||
+                !request.senha().matches("\\d+")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponseDTO("Dados inválidos"));
+        }
+
+        // Verificar se o email já está cadastrado
         Optional<Usuario> user = this.repository.findByEmail(email);
 
         if (user.isEmpty()) {
