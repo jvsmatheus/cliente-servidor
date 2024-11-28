@@ -4,7 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class teste {
     public static void main(String[] args) {
-        String plainPassword = "Teste123";
+        String plainPassword = "123456";
 
         // Geração de um salt e encriptação da senha
         String hashedPassword = BCrypt.hashpw(plainPassword, BCrypt.gensalt());

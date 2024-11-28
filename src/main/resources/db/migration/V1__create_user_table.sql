@@ -6,4 +6,4 @@ CREATE TABLE usuarios (
 );
 
 INSERT INTO usuarios (nome, email, senha, is_admin)
-VALUES ('Teste', 'teste@teste.com', '$2a$10$o8GRGghMpvBaWqpFY1IJZ.X6IlMSVgIDI7bZ4YPoR0zZS6swYCMGi', TRUE);
+VALUES ('admin', 'admin@email.com', '$2a$10$EHnnAPQiLBn.ugpEwD7yuOMYFVTytv4WDP6sequX3MnW2QBIZI686', TRUE);
