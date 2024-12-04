@@ -34,10 +34,27 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf(csrf -> csrf.disable())
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
+                        .requestMatchers(HttpMethod.PUT,"/usuarios/**").permitAll()
+
+                        .requestMatchers(HttpMethod.GET,"/usuarios/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT,"/usuarios/**").permitAll()
+
+
+                        //-----------------------------ADMIN---------------------------------------
+                        .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("admin")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasRole("admin")
+                        .requestMatchers(HttpMethod.PUT,"/usuarios/**").hasRole("admin")
+
+
+                        // Acesso para usuários autenticados
+                        .requestMatchers(HttpMethod.GET, "/usuarios/{email}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/logout").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
