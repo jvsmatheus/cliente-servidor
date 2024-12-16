@@ -21,6 +21,5 @@ public class Usuario {
     private String email;
     private String nome;
     private String senha;
-    @Column(name = "is_admin")
-    private Boolean isAdmin;
+    private Boolean admin;
 }

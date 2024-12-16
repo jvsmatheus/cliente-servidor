@@ -52,7 +52,7 @@ public class UsuarioService {
         newUser.setNome(request.nome());
         newUser.setEmail(request.email());
         newUser.setSenha(passwordEncoder.encode(request.senha()));
-        newUser.setIsAdmin(false);
+        newUser.setAdmin(false);
 
         this.repository.save(newUser);
 
