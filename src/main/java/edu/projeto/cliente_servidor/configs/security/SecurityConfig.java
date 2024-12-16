@@ -38,25 +38,7 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-                        .requestMatchers(HttpMethod.PUT,"/usuarios/**").permitAll()
-
-                        .requestMatchers(HttpMethod.GET,"/usuarios/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT,"/usuarios/**").permitAll()
-
-
-                        //-----------------------------ADMIN---------------------------------------
-                        .requestMatchers(HttpMethod.GET, "/usuarios").hasRole("admin")
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios/**").hasRole("admin")
-                        .requestMatchers(HttpMethod.PUT,"/usuarios/**").hasRole("admin")
-
-
-                        // Acesso para usuários autenticados
-                        .requestMatchers(HttpMethod.GET, "/usuarios/{email}").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/logout").authenticated()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

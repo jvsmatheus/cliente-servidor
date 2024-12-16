@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import edu.projeto.cliente_servidor.models.Usuario;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +52,21 @@ public class TokenService {
 
     private Instant generateExpirationDate() {
         return LocalDateTime.now().plusMinutes(15).toInstant(ZoneOffset.of("-03:00"));
+    }
+
+    public boolean isAdmin(String token) throws RuntimeException {
+        try {
+            // Decodifica o token e obtém as claims
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secret.getBytes()) // Use a mesma chave para verificar o token
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            // Recupera o valor de "admin" das claims
+            Boolean isAdmin = claims.get("admin", Boolean.class);
+            return Boolean.TRUE.equals(isAdmin); // Retorna true somente se for explicitamente true
+        } catch (Exception e) {
+            throw new RuntimeException("Token inválido: " + e.getMessage());
+        }
     }
 }
