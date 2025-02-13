@@ -40,6 +40,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll()
                 )
+                .cors().and()
+                .logout().logoutUrl("/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    System.out.println("chegou");
+                })
+                .and()
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
