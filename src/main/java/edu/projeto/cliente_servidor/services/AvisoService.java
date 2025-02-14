@@ -51,27 +51,25 @@ public class AvisoService {
         }
     }
 
-    public ResponseEntity<?> read() {
+    public ResponseEntity<?> read(Integer idCategoria) {
         try {
-            // Criação da categoria
+            var warnings = this.repository.findByCategoriaId(idCategoria);
 
-            var categories = this.repository.findAll();
-            return ResponseEntity.status(HttpStatus.OK).body(categories);
+            return ResponseEntity.status(HttpStatus.OK).body(warnings);
 
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @Transactional
     public ResponseEntity<?> update(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
             Integer id,
-            String nome
+            String descricao
     ) {
         System.out.println(authorizationHeader);
         System.out.println(id);
-        System.out.println(nome);
+//        System.out.println(nome);
         try {
             // Verifica se o cabeçalho Authorization está presente
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
@@ -85,14 +83,14 @@ public class AvisoService {
                 return ResponseEntity.status(403).body("Você não tem permissão suficiente para performar esta ação");
             }
 
-            var categoria = this.repository.findById(id);
+            var warning = this.repository.findById(id);
 
-            if(categoria.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrada");
+            if(warning.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aviso não encontrada");
             }
 
 //            categoria.get().setNome(nome);
-            this.repository.updateNomeById(id, nome);
+            this.repository.updateDescricaoById(id, descricao);
             return ResponseEntity.status(HttpStatus.OK).build();
 
         } catch (Exception e) {
@@ -101,7 +99,6 @@ public class AvisoService {
         }
     }
 
-    @Transactional
     public ResponseEntity<?> delete(
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authorizationHeader,
             Integer id
