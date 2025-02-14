@@ -116,10 +116,10 @@ public class AvisoService {
                 return ResponseEntity.status(403).body("Você não tem permissão suficiente para performar esta ação");
             }
 
-            var categoria = this.repository.findById(id);
+            var warning = this.repository.findById(id);
 
-            if(categoria.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoria não encontrada");
+            if(warning.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aviso não encontrado");
             }
 
             this.repository.deleteById(id);

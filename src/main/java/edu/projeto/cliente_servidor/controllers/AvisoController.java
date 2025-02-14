@@ -32,8 +32,8 @@ public class AvisoController {
         return this.service.update(token, id, request.descricao());
     }
 
-//    @DeleteMapping(value = "/{id}")
-//    public ResponseEntity<?> delete(@PathVariable Integer id, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-//        return this.service.delete(token, id);
-//    }
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return this.service.delete(token, id);
+    }
 }
