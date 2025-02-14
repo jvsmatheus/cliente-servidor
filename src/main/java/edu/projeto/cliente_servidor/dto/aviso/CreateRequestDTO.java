@@ -1,4 +1,6 @@
 package edu.projeto.cliente_servidor.dto.aviso;
 
-public record CreateRequestDTO(Integer idCategoria, String descricao) {
+import edu.projeto.cliente_servidor.models.Categoria;
+
+public record CreateRequestDTO(Categoria categoria, String descricao) {
 }

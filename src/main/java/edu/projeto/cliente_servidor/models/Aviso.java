@@ -16,11 +16,13 @@ public class Aviso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String descricao;
-    @Column(name = "id_categoria")
-    private Integer idCategoria;
+//    @Column(name = "id_categoria")
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private Categoria categoria;
 
-    public Aviso(String descricao, Integer idCategoria) {
+    public Aviso(String descricao, Categoria categoria) {
         this.descricao = descricao;
-        this.idCategoria = idCategoria;
+        this.categoria = categoria;
     }
 }

@@ -40,7 +40,9 @@ public class AvisoService {
             }
 
             // Criação da categoria
-            Aviso aviso = new Aviso(request.descricao(), request.idCategoria());
+            Aviso aviso = new Aviso();
+            aviso.setCategoria(request.categoria());
+            aviso.setDescricao(request.descricao());
             this.repository.save(aviso);
             return ResponseEntity.status(HttpStatus.CREATED).build();
 
