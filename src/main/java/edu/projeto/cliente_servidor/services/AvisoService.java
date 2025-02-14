@@ -86,7 +86,7 @@ public class AvisoService {
             var warning = this.repository.findById(id);
 
             if(warning.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aviso não encontrada");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aviso não encontrado");
             }
 
 //            categoria.get().setNome(nome);
